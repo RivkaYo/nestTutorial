@@ -1,30 +1,27 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  HttpException,
-  Param,
-  Patch,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch } from '@nestjs/common';
+import { StudentService } from './student.service';
+import { GetStudentDto } from './dto';
 
 @Controller('student')
 export class StudentController {
+  constructor(private readonly StudentService: StudentService) {}
   @Get()
-  getAll() {}
-
-  @Get()
-  getById(@Param('id') id: number) {
-    throw new HttpException('Internal server error', 500);
+  getAll() {
+    return this.StudentService.getAll();
   }
 
-  @Patch()
-  patchById(@Body('id') id: number) {
-    throw new HttpException('Internal server error', 500);
+  @Get(':id')
+  getById(@Param() param: GetStudentDto) {
+    return this.StudentService.getById(param.id);
   }
 
-  @Delete()
-  deleteById(@Body('id') id: number) {
-    throw new HttpException('Internal server error', 500);
+  @Patch(':id')
+  patchById(@Param() param: GetStudentDto, @Body() updateData: string) {
+    return this.StudentService.patchById(param.id, updateData);
+  }
+
+  @Delete(':id')
+  deleteById(@Param() param: GetStudentDto) {
+    return this.StudentService.deleteById(param.id);
   }
 }
